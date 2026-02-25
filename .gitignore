@@ -21,12 +21,16 @@
 .DS_Store
 Thumbs.db
 
-# ===== Track only .cpp files and folders =====
-# Ignore everything
-*
+# ===== Ignore folders starting with numbers (01, 02, etc.) =====
+# Ignore any folder in root or subfolders that starts with 01, 02, ..., 09, etc.
+# You can use a pattern like [0-9][0-9]*/
+[0-9][0-9]*/ 
 
-# But do not ignore directories
-!*/
-
-# Track only .cpp files
+# But do NOT ignore .cpp files anywhere
 !*.cpp
+
+# But do NOT ignore .txt files anywhere
+!*.txt
+
+# Optional: do not ignore folders themselves (so git can check for .cpp/.txt inside)
+!*/
