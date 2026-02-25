@@ -1,52 +1,32 @@
-# Compiled object files
+# ===== VS Code =====
+.vscode/
+
+# ===== Build files =====
 *.o
 *.obj
-*.lo
-*.la
-*.al
-*.lai
-
-# Compiled static libraries
-*.lib
-*.a
-*.la
-
-# Compiled dynamic libraries
-*.dll
-*.so
-*.dylib
-
-# Executables
 *.exe
 *.out
 *.app
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Build directories
 /build/
-/bin/
 /Debug/
 /Release/
 
-# CMake files
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-Makefile
-
-# VS Code
-.vscode/
-
-# CLion
-.idea/
-
-# MacOS
-.DS_Store
-
-# Logs
+# ===== Backup and temporary files =====
 *.log
+*.tmp
+*.bak
+*~
+
+# ===== OS files =====
+.DS_Store
+Thumbs.db
+
+# ===== Track only .cpp files and folders =====
+# Ignore everything
+*
+
+# But do not ignore directories
+!*/
+
+# Track only .cpp files
+!*.cpp
