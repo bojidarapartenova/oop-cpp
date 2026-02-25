@@ -1,7 +1,15 @@
-# ===== VS Code =====
-.vscode/
+# Ignore files that are exactly 2 digits (01, 02, etc.), with any extension
+[0-9][0-9]      # matches files like '01' or '02'
+[0-9][0-9].*    # matches files like '01.cpp', '02.txt', etc.
 
-# ===== Build files =====
+# But do NOT ignore .cpp files
+!*.cpp
+
+# But do NOT ignore .txt files
+!*.txt
+
+# Keep VS Code and build/temp files ignored
+.vscode/
 *.o
 *.obj
 *.exe
@@ -10,27 +18,9 @@
 /build/
 /Debug/
 /Release/
-
-# ===== Backup and temporary files =====
 *.log
 *.tmp
 *.bak
 *~
-
-# ===== OS files =====
 .DS_Store
 Thumbs.db
-
-# ===== Ignore folders starting with numbers (01, 02, etc.) =====
-# Ignore any folder in root or subfolders that starts with 01, 02, ..., 09, etc.
-# You can use a pattern like [0-9][0-9]*/
-[0-9][0-9]*/ 
-
-# But do NOT ignore .cpp files anywhere
-!*.cpp
-
-# But do NOT ignore .txt files anywhere
-!*.txt
-
-# Optional: do not ignore folders themselves (so git can check for .cpp/.txt inside)
-!*/
