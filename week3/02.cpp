@@ -11,9 +11,7 @@ private:
     int strength = 10;
     int agility = 10;
 
-public:
-    Character() = default;
-    Character(const std::string name_, int level_, int health_, int mana_, int strength_, int agility_) : name(name_), level(level_), health(health_), mana(mana_), strength(strength_) {}
+    Character(const std::string name_, int level_, int health_, int mana_, int strength_, int agility_) : name(name_), level(level_), health(health_), mana(mana_), strength(strength_), agility(agility_) {}
 
 public:
     class Builder
