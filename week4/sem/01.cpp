@@ -1,10 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <print>
 
-enum Quadrant
+enum class Quadrant
 {
-    I = 1,
+    I,
     II,
     III,
     IV,
@@ -20,6 +21,9 @@ private:
     mutable int counter = 0;
 
 public:
+    Point() = default;
+    Point(int x_, int y_) : x(x_), y(y_) {}
+
     int GetX() const
     {
         counter++;
@@ -89,14 +93,14 @@ public:
             return;
         }
 
-        file << x << ' ' << y;
+        file << x << ' ' << y << ' ';
         file.close();
     }
 
     void WriteStream(std::ostream &os) const
     {
         counter++;
-        os << x << " " << y;
+        os << x << ' ' << y << ' ';
     }
 
     void ReadFile(const char *fileName)
@@ -126,69 +130,90 @@ public:
     {
         counter = 0;
     }
+
+    void PointInfo()
+    {
+        std::cout << x << y << std::endl;
+    }
+
+    ~Point()
+    {
+        std::printf("point destroyed. \n");
+    }
 };
 
 class Triangle
 {
 private:
-    Point a;
-    Point b;
-    Point c;
+    // Point a;
+    // Point b;
+    // Point c;
+
+    Point points[3];
 
     mutable int counter = 0;
 
 public:
+    Triangle() = default;
+
+    Triangle(Point points_[3])
+    {
+        for (size_t i = 0; i < 3; i++)
+        {
+            this->points[i] = points_[i];
+        }
+    }
     Point GetA() const
     {
         counter++;
-        return a;
+        return points[0];
     }
     Point GetB() const
     {
         counter++;
-        return b;
+        return points[1];
     }
     Point GetC() const
     {
         counter++;
-        return c;
+        return points[2];
     }
 
-    void SetA(const Point &a_)
+    void SetA(const Point a_)
     {
         counter++;
-        a = a_;
+        points[0] = a_;
     }
-    void SetB(const Point &b_)
+    void SetB(const Point b_)
     {
         counter++;
-        b = b_;
+        points[1] = b_;
     }
-    void SetC(const Point &c_)
+    void SetC(const Point c_)
     {
         counter++;
-        c = c_;
+        points[2] = c_;
     }
 
     double CalcPerimeter() const
     {
         counter++;
-        return a.CalcDistance(b) + b.CalcDistance(c) + a.CalcDistance(c);
+        return points[0].CalcDistance(points[1]) + points[1].CalcDistance(points[2]) + points[0].CalcDistance(points[2]);
     }
 
     double CalcArea() const
     {
         counter++;
         double semiPer = CalcPerimeter() / 2;
-        return sqrt(semiPer * (semiPer - a.CalcDistance(b)) * (semiPer - b.CalcDistance(c)) * (semiPer - a.CalcDistance(c)));
+        return sqrt(semiPer * (semiPer - points[0].CalcDistance(points[1])) * (semiPer - points[1].CalcDistance(points[2])) * (semiPer - points[0].CalcDistance(points[2])));
     }
 
     Quadrant CalcQuadrant() const
     {
         counter++;
         Point point;
-        double gx = (a.GetX() + b.GetX() + c.GetX()) / 3.0;
-        double gy = (a.GetY() + b.GetY() + c.GetY()) / 3.0;
+        double gx = (points[0].GetX() + points[1].GetX() + points[2].GetX()) / 3.0;
+        double gy = (points[0].GetY() + points[1].GetY() + points[2].GetY()) / 3.0;
 
         point.SetX(gx);
         point.SetY(gy);
@@ -204,9 +229,9 @@ public:
         {
             return;
         }
-        a.WriteStream(file);
-        b.WriteStream(file);
-        c.WriteStream(file);
+        points[0].WriteStream(file);
+        points[1].WriteStream(file);
+        points[2].WriteStream(file);
     }
 
     void ReadFile(const char *fileName)
@@ -217,25 +242,25 @@ public:
         {
             return;
         }
-        a.ReadStream(file);
-        b.ReadStream(file);
-        c.ReadStream(file);
+        points[0].ReadStream(file);
+        points[1].ReadStream(file);
+        points[2].ReadStream(file);
     }
 
     void WriteStream(std::ostream &os) const
     {
         counter++;
-        a.WriteStream(os);
-        b.WriteStream(os);
-        c.WriteStream(os);
+        points[0].WriteStream(os);
+        points[1].WriteStream(os);
+        points[2].WriteStream(os);
     }
 
     void ReadStream(std::istream &is)
     {
         counter++;
-        a.ReadStream(is);
-        b.ReadStream(is);
-        c.ReadStream(is);
+        points[0].ReadStream(is);
+        points[1].ReadStream(is);
+        points[2].ReadStream(is);
     }
 
     void ResetCounter()
@@ -247,56 +272,69 @@ public:
     {
         return counter;
     }
+
+    ~Triangle()
+    {
+        std::printf("triangle destroyed. \n");
+    }
 };
 
 int main()
 {
-    Triangle t;
-
     std::cout << "Enter coordinates for point A (x y): ";
     double xA, yA;
     std::cin >> xA >> yA;
-    Point a;
-    a.SetX(xA);
-    a.SetY(yA);
-    t.SetA(a);
+    Point a(xA, yA);
+
+    // Point a;
+    // a.SetX(xA);
+    // a.SetY(yA);
+    // t.SetA(a);
 
     std::cout << "Enter coordinates for point B (x y): ";
     double xB, yB;
     std::cin >> xB >> yB;
-    Point b;
-    b.SetX(xB);
-    b.SetY(yB);
-    t.SetB(b);
+    Point b(xB, yB);
+
+    // Point b;
+    // b.SetX(xB);
+    // b.SetY(yB);
+    // t.SetB(b);
 
     std::cout << "Enter coordinates for point C (x y): ";
     double xC, yC;
     std::cin >> xC >> yC;
-    Point c;
-    c.SetX(xC);
-    c.SetY(yC);
-    t.SetC(c);
+    Point c(xC, yC);
 
-    std::cout << "Perimeter: " << t.CalcPerimeter() << std::endl;
+    // Point c;
+    // c.SetX(xC);
+    // c.SetY(yC);
+    // t.SetC(c);
+
+    Point points[] = {a, b, c};
+
+    Triangle t(points);
+    std::cout
+        << "Perimeter: " << t.CalcPerimeter() << std::endl;
     std::cout << "Area: " << t.CalcArea() << std::endl;
 
     Quadrant quad = t.CalcQuadrant();
     std::cout << "Centroid quadrant: ";
     switch (quad)
     {
-    case I:
+    case Quadrant::I:
         std::cout << "I";
         break;
-    case II:
+    case Quadrant::II:
         std::cout << "II";
         break;
-    case III:
+    case Quadrant::III:
         std::cout << "III";
         break;
-    case IV:
+    case Quadrant::IV:
         std::cout << "IV";
         break;
-    case None:
+    case Quadrant::None:
         std::cout << "None";
         break;
     }
