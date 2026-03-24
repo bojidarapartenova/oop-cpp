@@ -1,3 +1,6 @@
+#pragma once
+#include <iostream>
+
 enum class Rank
 {
     Private,
@@ -9,18 +12,21 @@ enum class Rank
 class Soldier
 {
 private:
-    int healthPoints = 100;
-    Rank rank;
-    int love = 0;
-    int bulletsLeft = 0;
+    static std::ostream &ds;
+    int hp = 100;
+    Rank rank = Rank::Private;
+    int LOVE = 0;
+    int ammoLeft = 100;
 
 public:
     Soldier() = default;
-    Soldier(int healthPoints_, Rank rank_, int love_, int bulletsLeft_);
-
-    void shootAt(Soldier &soldier);
+    Soldier(int hp, Rank rank, int LOVE, int ammoLeft);
+    ~Soldier();
     void getShot();
-    int getHealthPoints();
-    void increaseRank(Soldier &soldier);
-    void getIncreased();
+    void shootAt(Soldier &enemy);
+    int getHP() const;
+    Rank getRank() const;
+    int getLOVE() const;
+    void promote(Soldier &enemy);
+    void getPromoted();
 };

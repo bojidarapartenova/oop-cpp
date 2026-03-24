@@ -1,101 +1,109 @@
-#include <iostream>
 #include "soldier.h"
+#include <random>
 
-Soldier::Soldier(int healthPoints_, Rank rank_, int love_, int bulletsLeft_) : healthPoints(healthPoints_), rank(rank_), love(love_), bulletsLeft(bulletsLeft_)
+std::ostream &Soldier::ds = std::cout;
+
+Soldier::Soldier(int hp, Rank rank, int LOVE, int ammoLeft) : hp(hp), rank(rank), LOVE(LOVE), ammoLeft(ammoLeft) {}
+
+Soldier::~Soldier()
 {
-}
-
-void Soldier::shootAt(Soldier &soldier)
-{
-    if (bulletsLeft > 0)
-    {
-        double chance = 0;
-        if (this->rank == Rank::Private)
-        {
-            chance = 0.6;
-        }
-        else if (this->rank == Rank::Corporal)
-        {
-            chance = 0.7;
-        }
-        else if (this->rank == Rank::Sergeant)
-        {
-            chance = 0.8;
-        }
-        else if (this->rank == Rank::Major)
-        {
-            chance = 0.9;
-        }
-
-        double r = (double)std::rand() / RAND_MAX;
-        if (r <= chance)
-        {
-            soldier.getShot();
-            love++;
-            std::cout << "You hit." << std::endl;
-        }
-        else
-        {
-            std::cout << "You failed." << std::endl;
-        }
-        bulletsLeft--;
-
-        if (bulletsLeft < 0)
-        {
-            bulletsLeft = 0;
-        }
-    }
-    else
-    {
-        std::cout << "Not enough bullets." << std::endl;
-    }
+    std::printf("A brave nameless {} has tragically passed away after spreading {} LOVE.\n", rank, LOVE);
 }
 
 void Soldier::getShot()
 {
-    healthPoints--;
-    if (healthPoints < 0)
+    hp -= 40;
+
+    if (hp < 0)
+        hp = 0;
+}
+
+void Soldier::shootAt(Soldier &enemy)
+{
+    if (ammoLeft <= 0)
+        return;
+
+    ammoLeft--;
+
+    int chance = 0;
+    switch (rank)
     {
-        healthPoints = 0;
+    case Rank::Private:
+        chance = 0.6 * 100;
+        break;
+    case Rank::Corporal:
+        chance = 0.7 * 100;
+        break;
+    case Rank::Sergeant:
+        chance = 0.8 * 100;
+        break;
+    case Rank::Major:
+        chance = 0.9 * 100;
+        break;
     }
-    std::cout << "You got shot." << std::endl;
+
+    if (std::rand() % 100 >= chance)
+        return;
+
+    LOVE++;
+    enemy.getShot();
 }
 
-int Soldier::getHealthPoints()
+int Soldier::getHP() const
 {
-    return this->healthPoints;
+    return hp;
 }
 
-void Soldier::increaseRank(Soldier &soldier)
+Rank Soldier::getRank() const
 {
-    if (this->rank > soldier.rank)
+    return rank;
+}
+
+int Soldier::getLOVE() const
+{
+    return LOVE;
+}
+
+void Soldier::promote(Soldier &soldier)
+{
+    if (rank <= soldier.getRank())
+        return;
+
+    int loveNeeded = 0;
+    switch (soldier.getRank())
     {
-        if (soldier.rank == Rank::Private)
-        {
-            soldier.rank == Rank::Corporal;
-        }
-        else if (soldier.rank == Rank::Corporal)
-        {
-            soldier.rank == Rank::Sergeant;
-        }
-        else if (soldier.rank == Rank::Sergeant)
-        {
-            soldier.rank == Rank::Major;
-        }
-        soldier.getIncreased();
-        std::cout << "You increased soldiers rank." << std::endl;
+    case Rank::Private:
+        loveNeeded = 10;
+        break;
+    case Rank::Corporal:
+        loveNeeded = 20;
+        break;
+    case Rank::Sergeant:
+        loveNeeded = 30;
+        break;
+    case Rank::Major:
+        loveNeeded = 40;
+        break;
     }
-    else
+
+    if (soldier.LOVE < loveNeeded)
+        return;
+
+    soldier.getPromoted();
+}
+
+void Soldier::getPromoted()
+{
+    switch (rank)
     {
-        std::cout << "You can't increase soldiers rank." << std::endl;
+    case Rank::Private:
+        rank = Rank::Corporal;
+        break;
+    case Rank::Corporal:
+        rank = Rank::Sergeant;
+        break;
+    case Rank::Sergeant:
+        rank = Rank::Major;
+        break;
     }
-}
-
-void Soldier::getIncreased()
-{
-    std::cout << "You got increased" << std::endl;
-}
-
-int main()
-{
 }
