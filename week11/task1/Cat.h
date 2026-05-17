@@ -19,7 +19,7 @@ public:
     void loseLife();
     void scratch();
     bool isAlive() const;
-    void displayInfo() const;
+    void displayInfo() const override;
 };
 
 #endif

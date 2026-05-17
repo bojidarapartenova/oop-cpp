@@ -17,7 +17,7 @@ public:
     int getTricksKnown() const;
     void learnTrick();
     void train();
-    void displayInfo() const;
+    void displayInfo() const override;
     bool canCompete() const;
 };
 

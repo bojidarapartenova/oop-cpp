@@ -19,7 +19,7 @@ public:
     const std::string &getSpecies() const;
     int getAge() const;
     double getWeight() const;
-    void displayInfo() const;
+    virtual void displayInfo() const;
 
     bool operator==(const Animal &other) const;
 
