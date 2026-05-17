@@ -13,6 +13,7 @@ private:
 
 public:
     Animal(std::string name, std::string species, int age, double weight);
+    virtual ~Animal() = default;
 
     const std::string &getName() const;
     const std::string &getSpecies() const;
